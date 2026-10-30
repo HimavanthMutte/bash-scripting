@@ -6,7 +6,7 @@ then
     exit 1
 fi
 path=$1
-age=$2
+age=${2:=30}
 
 if ! [[ $age =~ ^[0-9]+$ ]]; then
     echo "ERROR: Days must be a non-negative integer"
@@ -30,10 +30,7 @@ if [[ "$choice" != "y" && "$choice" != "Y" ]]; then
     exit 0
 fi
 
-if [[ "$choice" != "y" && "$choice" != "Y" ]]; then
-    echo "Cleanup cancelled."
-    exit 0
-fi
+find $path -type -f -mtime +"$days" -delete
 
 if [[ $? -eq 0 ]]
 then
