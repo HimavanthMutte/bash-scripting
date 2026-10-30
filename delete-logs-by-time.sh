@@ -2,10 +2,16 @@
 if [[ -z $1 ]]
 then
     echo "ERROR: Directory Not Provided"
-    echo "USAGE: $0 [directory]"
+    echo "USAGE: $0 [directory] [age]"
     exit 1
 fi
 path=$1
+age=$2
+
+if ! [[ $age =~ ^[0-9]+$ ]]; then
+    echo "ERROR: Days must be a non-negative integer"
+    exit 1
+fi
 
 if [[ ! -d "$path" ]]
 then
@@ -13,9 +19,9 @@ then
     exit 1
 fi
 
-ech0 "Cleaning Files older than 30 days in: $path"
+echo "Cleaning Files older than $age days in: $path"
 
-find $path -type -f -mtime +30 -delete
+find $path -type -f -mtime +"$days" -delete
 
 if [[ $? -eq 0 ]]
 then
