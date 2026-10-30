@@ -7,6 +7,12 @@ then
 fi
 path=$1
 
+if [[ ! -d "$path" ]]
+then
+    echo "ERROR: Invalid Directory"
+    exit 1
+fi
+
 find $path -type -f -mtime +30 -delete
 
 if [[ $? -eq 0 ]]
