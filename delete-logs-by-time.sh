@@ -1,6 +1,8 @@
+#!/bin/bash
 if [[ -z $1 ]]
 then
     echo "ERROR: Directory Not Provided"
+    echo "USAGE: $0 [directory]"
     exit 1
 fi
 path=$1
