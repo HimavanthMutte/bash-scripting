@@ -21,7 +21,19 @@ fi
 
 echo "Cleaning Files older than $age days in: $path"
 
-find $path -type -f -mtime +"$days" -delete
+find $path -type -f -mtime +"$days" -print
+
+read -r -p "Are you sure you want to delete these files? (y/n): " choice
+
+if [[ "$choice" != "y" && "$choice" != "Y" ]]; then
+    echo "Cleanup cancelled."
+    exit 0
+fi
+
+if [[ "$choice" != "y" && "$choice" != "Y" ]]; then
+    echo "Cleanup cancelled."
+    exit 0
+fi
 
 if [[ $? -eq 0 ]]
 then
