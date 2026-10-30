@@ -13,6 +13,8 @@ then
     exit 1
 fi
 
+ech0 "Cleaning Files older than 30 days in: $path"
+
 find $path -type -f -mtime +30 -delete
 
 if [[ $? -eq 0 ]]
