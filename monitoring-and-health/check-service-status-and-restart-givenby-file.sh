@@ -17,6 +17,12 @@ fi
 
 while read service
 do
+    if ! systemctl list-unit-files --type=service | grep -q "^${service}.service"
+    then
+        echo "ERROR: $service does not exist"
+        continue
+    fi
+
     if ! systemctl is-active --quiet "$service"
     then
         echo "ALERT: $service is not active - attempting to restart"
