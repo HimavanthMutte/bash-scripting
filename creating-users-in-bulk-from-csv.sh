@@ -20,10 +20,11 @@ fi
     while IFS="," read -r username group shell
     do
         echo "Processing user: $username"
-
+        echo "------------------------------------------------"
         if id "$username" &>/dev/null
         then
             echo "User $username already exists. Skipping..."
+            echo "------------------------------------------------"
             continue
         fi
 
@@ -44,6 +45,6 @@ fi
         else
             echo "ERROR: Failed to create user $username"
         fi
-
+        echo "------------------------------------------------"
     done
 } < "$file_path"
