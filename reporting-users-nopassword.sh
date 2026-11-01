@@ -1,7 +1,13 @@
+
 #!/bin/bash
 
-while read user
+while read -r user
 do
-    password_status = $(sudo passwd -S $use | awk '{print $2}')
-    echo "$user $password_status"
-done < <(awk -F ":" '$3>1000 {print$1}' /etc/passwd)
+    password_status=$(sudo passwd -S "$user" | awk '{print $2}')
+
+    if [[ $password_status == "NP" ]]
+    then
+        echo "$user"
+    fi
+
+done < <(awk -F ":" '$3 >= 1000 {print $1}' /etc/passwd)
