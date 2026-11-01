@@ -30,7 +30,7 @@ fi
 
 while read group
 do
-    if ! getnet groups $group &> /dev/null
+    if ! getent groups $group &> /dev/null
     then
         echo "Group $group does not exist"
         continue
