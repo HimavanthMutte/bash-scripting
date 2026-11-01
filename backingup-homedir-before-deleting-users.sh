@@ -16,10 +16,18 @@ fi
 
 while read user
 do
-    if id $user &> /dev/null
+    if ! id "$user" &>/dev/null
     then
-        echo "User exists"
-    else
-        echo "User does not exists...."
+        echo "User $user does not exist..."
+        continue
     fi
+
+    home_dir=$(getent passwd "$user" | awk -F: '{print $6}')
+
+    if [[ ! -d "$home_dir" ]]
+    then
+        echo "User $user home directory does not exist..."
+        continue
+    fi
+    
 done < $file_path
