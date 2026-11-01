@@ -10,6 +10,7 @@ fi
     read 
 while IFS="," read username group shell
 do
+
     id $username &> /dev/null
     if [[ $? -eq 0 ]]
     then
@@ -17,6 +18,13 @@ do
     else
         echo "Creating user.... - $username"
     fi
-    echo "Assigning group: $group"
+
+    if getent group $group &>/dev/null
+    then
+        echo "Group already exists"
+    else
+        echo "Group does not exist" 
+    fi
+    
     echo "Assigning shell: $shell"
 done }< $1
