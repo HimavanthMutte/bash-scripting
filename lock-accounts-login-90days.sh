@@ -11,6 +11,14 @@ lastlog -b 90 | awk 'NR>1 {print $1}' | while read -r user
 do
     echo "Inactive User - $user"
 
+    uid=$(id -u "$user")
+
+    if [[ $uid -lt 1000 ]]
+    then
+        echo "Skipping system account: $user (UID: $uid)"
+        continue
+    fi
+
     if ! id "$user" &>/dev/null
     then
         echo "User account not found"
