@@ -1,0 +1,7 @@
+{
+read
+while read file_system usage
+do
+    echo "Checking disk space usage for $file_system: $usage"
+done
+} < <(df -h | awk '{print $1,$5}')
