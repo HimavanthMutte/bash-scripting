@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 services_file=$1
@@ -8,7 +9,7 @@ then
     exit 1
 fi
 
-if [[ -f $service_file ]]
+if [[ ! -f $services_file ]]
 then
     echo "Invalid File given"
     exit 1
@@ -16,5 +17,18 @@ fi
 
 while read service
 do
-    echo $service
-done < $services_file
+    if ! systemctl is-active --quiet "$service"
+    then
+        echo "ALERT: $service is not active - attempting to restart"
+
+        if systemctl restart "$service" && systemctl is-active --quiet "$service"
+        then
+            echo "SUCCESS: $service is restarted and running successfully"
+        else
+            echo "FAILURE: $service cannot be restarted"
+        fi
+    else
+        echo "SUCCESS: $service is active"
+    fi
+
+done < "$services_file"
