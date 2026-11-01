@@ -1,0 +1,1 @@
+ps aux --sort=-%mem | head -n 6 | awk 'BEGIN { OFS="  " } {print $1,$2,$4,$11}'
