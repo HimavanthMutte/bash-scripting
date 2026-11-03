@@ -1,15 +1,23 @@
 #!/bin/bash
 
-log_file=zombies.log
+log_file="zombies.log"
 
 
-echo "PID PPID COMMAND" > $log_file
+echo "PID PPID COMMAND" > "$log_file"
 
-ps -eao pid,ppid,stat,comm | awk '$3=="S" && NR>1
-{
-    print $1,$2,$4
-    found=1
-}   END {
-        if (!found)
-            print "No zombies found"
-    }' >> $log_file
+ps -eao pid,ppid,stat,comm | awk '
+BEGIN {
+    count = 0 
+}
+
+NR > 1 && $3 ~ /^Z/ {
+    print $1, $2, $4
+    count++
+}   
+
+END {
+    if (count == 0)
+        print "No zombies found"
+    else 
+        print "Total zombies found - " count
+}' >> "$log_file"
